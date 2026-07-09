@@ -1,0 +1,9 @@
+# Python / MicroPython
+__pycache__/
+*.pyc
+*.mpy
+
+# Editor / OS cruft
+.vscode/
+.DS_Store
+Thumbs.db
