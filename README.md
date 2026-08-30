@@ -5,6 +5,11 @@ Drives an SG90 servo from an ESP32-C3 Super Mini:
 - **Autonomous:** moves to a random angle once per hour.
 - **Manual override:** the free **Adafruit Bluefruit Connect** iOS app (Controller -> Control Pad) sends button presses over Bluetooth LE to set presets, jog, or trigger a sweep. Great for live demos, no WiFi needed.
 
+## Demo
+
+![Demo of the servo sweeping and responding to BLE control](demo.gif)
+
+
 ## Hardware wiring
 
 SG90 has three wires:
@@ -26,7 +31,7 @@ Notes:
 |------|---------|
 | [`boot.py`](boot.py)            | Runs first; disables WiFi (BLE-only) to save power and RAM |
 | [`config.py`](config.py)        | Pin, pulse-width limits, angle range, hourly interval, presets, BLE name |
-| [`servo.py`](servo.py)          | `Servo` class: `set_angle()`, `jog()`, async `sweep()` via 50 Hz PWM |
+| [`servo.py`](servo.py)          | `Servo` class: `set_angle()`, `jog()`, async `sweep()` and `move_to()` (gradual travel) via 50 Hz PWM |
 | [`ble_control.py`](ble_control.py) | Nordic UART Service over `aioble`; decodes Bluefruit Control Pad packets |
 | [`main.py`](main.py)            | asyncio loop: hourly random move + BLE override; maps buttons to actions |
 
@@ -61,6 +66,8 @@ mpremote mip install aioble
 
 ```bash
 mpremote fs cp boot.py config.py servo.py ble_control.py main.py :
+or
+python3 -m mpremote fs cp boot.py config.py servo.py ble_control.py main.py :
 ```
 
 6. Reset and watch the logs:
@@ -108,4 +115,5 @@ s.set_angle(90)
 
 - If the servo jitters at the extremes or can't quite reach 0/180, narrow `PULSE_MIN_NS` / `PULSE_MAX_NS` in [`config.py`](config.py) toward `1_000_000` / `2_000_000`.
 - Change `MOVE_INTERVAL_S` to test the autonomous move faster (e.g. `15` seconds).
+- Adjust `AUTO_MOVE_STEP_MS` to control how slowly the hourly random move travels (delay in ms per degree of travel; higher = slower).
 - Adjust `PRESETS`, `JOG_STEP`, and `REST_ANGLE` to taste.
