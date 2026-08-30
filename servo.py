@@ -31,6 +31,18 @@ class Servo:
     def jog(self, delta):
         return self.set_angle(self._angle + delta)
 
+    async def move_to(self, deg, step_delay_ms=config.AUTO_MOVE_STEP_MS):
+        # Travel to `deg` one degree at a time instead of snapping, so the
+        # move is visibly slower. step_delay_ms controls the speed: bigger
+        # number = slower travel. Awaited/stepped like sweep() so BLE stays
+        # responsive during the move.
+        deg = max(config.ANGLE_MIN, min(config.ANGLE_MAX, int(deg)))
+        step = 1 if deg >= self._angle else -1
+        for d in range(self._angle, deg + step, step):
+            self.set_angle(d)
+            await asyncio.sleep_ms(step_delay_ms)
+        return self._angle
+
     async def sweep(self):
         # Travel to both extremes then return to the rest position.
         # Stepped + awaited so the BLE server stays responsive during the move.

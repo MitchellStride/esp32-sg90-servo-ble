@@ -57,7 +57,7 @@ async def hourly_task():
         await asyncio.sleep(delay)
         angle = random.randint(config.ANGLE_MIN, config.ANGLE_MAX)
         async with _motion_lock:
-            servo.set_angle(angle)
+            await servo.move_to(angle)
         print("auto-move ->", angle, "deg")
         delay = config.MOVE_INTERVAL_S
 

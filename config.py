@@ -24,6 +24,11 @@ MOVE_INTERVAL_S = 3600
 # MOVE_INTERVAL_S.
 FIRST_MOVE_S = 30
 
+# How slowly the autonomous random move travels: delay in milliseconds
+# between each 1-degree step. Higher = slower travel. At 30ms/deg, a full
+# 180-degree sweep takes ~5.4s; a typical ~90 degree move takes ~2.7s.
+AUTO_MOVE_STEP_MS = 30
+
 # Step size (degrees) for the BLE jog buttons (Up / Down on the Control Pad).
 JOG_STEP = 10
 
