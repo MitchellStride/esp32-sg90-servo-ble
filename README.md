@@ -8,7 +8,9 @@ Drives an SG90 servo from an ESP32-C3 Super Mini:
 
 ## Demo
 
-![Demo of the servo sweeping and responding to BLE control](demo.gif)
+<p align="center">
+  <img src="demo.gif" alt="Demo of the servo sweeping and responding to BLE control" width="360">
+</p>
 
 
 ## Hardware wiring
