@@ -42,5 +42,35 @@ PRESETS = {
     "3": 180,
 }
 
-# Name advertised over BLE; this is what you tap to connect in Bluefruit Connect.
-BLE_NAME = "rat"
+# Name used for both the BLE GAP device name and advertising payload; this is
+# what you tap to connect in Bluefruit Connect.
+BLE_NAME = "SQL_Engi"
+
+# Optional 0.96-inch 128x64 SSD1306 OLED. Set this to False to run the exact
+# same servo + Bluefruit behavior without importing or initializing the OLED.
+OLED_ENABLED = True
+OLED_SDA_PIN = 8
+OLED_SCL_PIN = 9
+OLED_I2C_FREQ = 400_000
+OLED_ADDR = 0x3C
+OLED_WIDTH = 128
+OLED_HEIGHT = 64
+
+# Each display mode normally sits for five minutes. This is intentionally set
+# to 30 seconds while the animations are being tested; change it to 300 for
+# the finished installation.
+OLED_MODE_DURATION_S = 30
+OLED_FRAME_MS = 150
+
+# Display order. Remove a name to disable that mode or rearrange the tuple to
+# change the rotation order.
+OLED_MODES = (
+    "broadcom_terminal",
+    "death_star",
+    "oscilloscope",
+    "wasteland_hack",
+    "matrix",
+    "nut_backup",
+    "nut_radar",
+    "packet_sniffer",
+)

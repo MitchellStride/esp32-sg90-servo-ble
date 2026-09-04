@@ -66,7 +66,26 @@ async def main():
     ble = BLEControl(on_button)
     print("Servo at rest ({} deg). Advertising BLE as '{}'.".format(
         servo.angle, config.BLE_NAME))
-    await asyncio.gather(hourly_task(), ble.run())
+
+    display = None
+    if config.OLED_ENABLED:
+        try:
+            # Import only when enabled so the servo/BLE build remains usable
+            # even when no OLED files or hardware are present.
+            from oled.controller import OLEDController
+
+            display = OLEDController()
+            print("OLED found at 0x{:02X}; display modes enabled.".format(
+                config.OLED_ADDR))
+        except Exception as exc:
+            # A missing or miswired display must never stop head movement or
+            # the Bluefruit connection.
+            print("OLED unavailable; servo/BLE continuing:", exc)
+
+    if display is None:
+        await asyncio.gather(hourly_task(), ble.run())
+    else:
+        await asyncio.gather(hourly_task(), ble.run(), display.run())
 
 
 try:
